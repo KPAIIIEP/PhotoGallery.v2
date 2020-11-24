@@ -2,9 +2,14 @@ package ru.study.photogalleryv2;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 public class GalleryItem {
+    @SerializedName("id")
     private String id;
+    @SerializedName("title")
     private String caption;
+    @SerializedName("url_s")
     private String url;
 
     public String getId() {
