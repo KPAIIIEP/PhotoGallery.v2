@@ -22,5 +22,7 @@ public class FlickrFetch {
         return instance;
     }
 
-
+    public FlickrAPI getAPI() {
+        return retrofit.create(FlickrAPI.class);
+    }
 }
