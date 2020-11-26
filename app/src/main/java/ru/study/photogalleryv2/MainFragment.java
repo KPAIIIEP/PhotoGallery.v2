@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -12,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,19 +53,19 @@ public class MainFragment extends Fragment {
 
     private class PhotoHolder extends RecyclerView.ViewHolder {
         private GalleryItem galleryItem;
+        private ImageView imageView;
         private TextView textView;
 
         public PhotoHolder(@NonNull View itemView) {
             super(itemView);
+            imageView = (ImageView) itemView.findViewById(R.id.imageView);
             textView = (TextView) itemView.findViewById(R.id.textView);
         }
 
         public void bindGalleryItem(GalleryItem galleryItem) {
             this.galleryItem = galleryItem;
-            textView.setText("id: " + galleryItem.getId()
-                    + "\ncaption: " + galleryItem.getCaption()
+            textView.setText("caption: " + galleryItem.getCaption()
                     +  "\nurl: " + galleryItem.getUrl()
-                    + "\n"
             );
         }
     }
@@ -82,6 +85,10 @@ public class MainFragment extends Fragment {
         public void onBindViewHolder(@NonNull PhotoHolder holder, int position) {
             GalleryItem galleryItem = galleryItems.get(position);
             holder.bindGalleryItem(galleryItem);
+            Picasso instance = Picasso.get();
+            instance.load(galleryItem.getUrl())
+                    .placeholder(android.R.drawable.ic_menu_gallery)
+                    .into(holder.imageView);
         }
 
         @Override
