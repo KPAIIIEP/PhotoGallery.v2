@@ -4,9 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -14,8 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +29,14 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FlickrFetch instance = FlickrFetch.getInstance();
+        instance.requestGalleryItems();
+        instance.getLiveData().observe(this, new Observer<List<GalleryItem>>() {
+            @Override
+            public void onChanged(List<GalleryItem> galleryItems) {
+                photoAdapter.setPhotos(galleryItems);
+            }
+        });
     }
 
     @Override
@@ -44,15 +47,6 @@ public class MainFragment extends Fragment {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         photoAdapter = new PhotoAdapter();
         binding.recyclerView.setAdapter(photoAdapter);
-
-        FlickrFetch instance = FlickrFetch.getInstance();
-        instance.requestGalleryItems();
-        instance.getLiveData().observe(this, new Observer<List<GalleryItem>>() {
-            @Override
-            public void onChanged(List<GalleryItem> galleryItems) {
-                photoAdapter.setPhotos(galleryItems);
-            }
-        });
         return binding.getRoot();
     }
 
@@ -63,7 +57,6 @@ public class MainFragment extends Fragment {
             super(binding.getRoot());
             this.binding = binding;
             binding.setViewModel(new GalleryItemViewModel());
-
         }
 
         public void bindGalleryItem(GalleryItem galleryItem) {
@@ -88,10 +81,6 @@ public class MainFragment extends Fragment {
         public void onBindViewHolder(@NonNull PhotoHolder holder, int position) {
             GalleryItem galleryItem = galleryItems.get(position);
             holder.bindGalleryItem(galleryItem);
-            Picasso instance = Picasso.get();
-            instance.load(galleryItem.getUrl())
-                    .placeholder(android.R.drawable.ic_menu_gallery)
-                    .into(holder.binding.imageView);
         }
 
         @Override
