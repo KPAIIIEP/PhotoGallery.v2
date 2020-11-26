@@ -54,7 +54,7 @@ public class MainFragment extends Fragment {
 
         public PhotoHolder(@NonNull View itemView) {
             super(itemView);
-            textView = (TextView) itemView;
+            textView = (TextView) itemView.findViewById(R.id.textView);
         }
 
         public void bindGalleryItem(GalleryItem galleryItem) {
@@ -74,8 +74,7 @@ public class MainFragment extends Fragment {
         @Override
         public PhotoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater
-                    .inflate(android.R.layout.simple_list_item_1, parent, false);
+            View view = layoutInflater.inflate(R.layout.item_view, parent, false);
             return new PhotoHolder(view);
         }
 
