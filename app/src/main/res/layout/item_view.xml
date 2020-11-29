@@ -4,8 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="viewModel"
-            type="ru.study.photogalleryv2.GalleryItemViewModel"/>
+            name="galleryItem"
+            type="ru.study.photogalleryv2.GalleryItem"/>
+        <variable
+            name="bindingAdapters"
+            type="ru.study.photogalleryv2.BindingAdapters"/>
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -29,7 +32,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:src="@{viewModel.url}" />
+                android:src="@{galleryItem.url}" />
 
             <TextView
                 android:id="@+id/textView"
@@ -39,7 +42,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:gravity="start"
-                android:text="@{viewModel.caption}"
+                android:text="@{galleryItem.caption}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
