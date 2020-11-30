@@ -1,8 +1,5 @@
 package ru.study.photogalleryv2;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import java.util.List;
 
 import retrofit2.Call;
@@ -20,7 +17,6 @@ public class FlickrFetch {
             + "&format=json"
             + "&nojsoncallback=1"
             + "&extras=url_s";
-    private final MutableLiveData<List<GalleryItem>> liveData = new MutableLiveData<>();
 
     private FlickrFetch() {
         retrofit = new Retrofit.Builder()
@@ -36,10 +32,6 @@ public class FlickrFetch {
         return instance;
     }
 
-    public LiveData<List<GalleryItem>> getLiveData() {
-        return liveData;
-    }
-
     public FlickrAPI getAPI() {
         return retrofit.create(FlickrAPI.class);
     }
@@ -53,7 +45,6 @@ public class FlickrFetch {
                         List<GalleryItem> galleryItems  = response.body()
                                 .getGalleryItemWrapper()
                                 .getGalleryItems();
-                        liveData.setValue(galleryItems);
                     }
 
                     @Override

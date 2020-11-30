@@ -1,20 +1,23 @@
 package ru.study.photogalleryv2;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
-
-import java.util.List;
+import androidx.paging.PositionalDataSource;
 
 public class SourceFactory extends DataSource.Factory<Integer, GalleryItem> {
-    private final List<GalleryItem> galleryItems;
+    private MutableLiveData<PositionalDataSource<GalleryItem>> sourceMutableLiveData =
+            new MutableLiveData<>();
 
-    SourceFactory(List<GalleryItem> galleryItems) {
-        this.galleryItems = galleryItems;
+    public MutableLiveData<PositionalDataSource<GalleryItem>> getSourceMutableLiveData() {
+        return sourceMutableLiveData;
     }
 
     @NonNull
     @Override
     public DataSource<Integer, GalleryItem> create() {
-        return new PhotoDataSource(galleryItems);
+        PhotoDataSource dataSource = new PhotoDataSource();
+        sourceMutableLiveData.postValue(dataSource);
+        return dataSource;
     }
 }

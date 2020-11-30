@@ -1,40 +1,24 @@
 package ru.study.photogalleryv2;
 
-import android.widget.ImageView;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
+import androidx.paging.PositionalDataSource;
 
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
-import androidx.databinding.BindingAdapter;
+public class GalleryItemViewModel extends ViewModel {
+    public LiveData<PagedList<GalleryItem>> pagedListLiveData;
+    public LiveData<PositionalDataSource<GalleryItem>> dataSourceLiveData;
 
-import com.squareup.picasso.Picasso;
-
-public class GalleryItemViewModel extends BaseObservable {
-    private GalleryItem galleryItem;
-
-    public GalleryItem getGalleryItem() {
-        return galleryItem;
-    }
-
-    public void setGalleryItem(GalleryItem galleryItem) {
-        this.galleryItem = galleryItem;
-        notifyChange();
-    }
-
-    @Bindable
-    public String getCaption() {
-        return galleryItem.getCaption();
-    }
-
-    @Bindable
-    public String getUrl() {
-        return galleryItem.getUrl();
-    }
-
-    @BindingAdapter("android:src")
-    public static void imageLoad(ImageView imageView, String url) {
-        Picasso.get()
-                .load(url)
-                .placeholder(android.R.drawable.ic_menu_gallery)
-                .into(imageView);
+    public GalleryItemViewModel() {
+        SourceFactory sourceFactory = new SourceFactory();
+        dataSourceLiveData = sourceFactory.getSourceMutableLiveData();
+        PagedList.Config config = new PagedList.Config.Builder()
+                .setEnablePlaceholders(false)
+                .setPageSize(10)
+                .build();
+        pagedListLiveData = new LivePagedListBuilder<>(sourceFactory, config)
+//                        .setFetchExecutor(Executors.newSingleThreadExecutor())
+                        .build();
     }
 }
